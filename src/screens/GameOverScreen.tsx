@@ -2,22 +2,25 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { RootStackParamList } from '../../navigationTypes';
+import { RouteProp } from '@react-navigation/native';
 
-type GameOverScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+type GameOverScreenNavigationProp = StackNavigationProp<RootStackParamList, 'GameOver'>;
+type GameOverScreenRouteProp = RouteProp<RootStackParamList, 'GameOver'>;
 
 // Props type definition for component, assuming scores are passed as props
 type GameOverScreenProps = {
     navigation: GameOverScreenNavigationProp;
+    route: GameOverScreenRouteProp
 };
 
-const GameOverScreen: React.FC<GameOverScreenProps> = ({navigation}) => {
+const GameOverScreen: React.FC<GameOverScreenProps> = ({navigation, route}) => {
+    const {playerOneName, playerTwoName, points} = route.params;
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Game Over</Text>
       <View style={styles.scoreContainer}>
-        <Text style={styles.scoreText}>Team Score: </Text>
-        <Text style={styles.scoreText}>Player 1 Score: </Text>
-        <Text style={styles.scoreText}>Player 2 Score: </Text>
+        <Text style={styles.scoreText}>Congratulations {playerOneName} and {playerTwoName}!</Text>
+        <Text style={styles.scoreText}>{points} points!!</Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Starting')}>
         <Text style={styles.buttonText}>Play Again</Text>

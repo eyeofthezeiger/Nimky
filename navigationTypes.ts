@@ -4,6 +4,10 @@ export type RootStackParamList = {
         playerOneName: string;
         playerTwoName: string;
     };
-    GameOver: undefined;
+    GameOver: {
+        playerOneName: string;
+        playerTwoName: string;
+        points: number;
+    };
   };
   

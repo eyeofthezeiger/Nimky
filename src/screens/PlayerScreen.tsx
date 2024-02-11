@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } fro
 import { RootStackParamList } from '../../navigationTypes';
 import { RouteProp } from '@react-navigation/native';
 
-type PlayerScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+type PlayerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Game'>;
 type PlayerScreenRouteProp = RouteProp<RootStackParamList, 'Game'>
 
 // Props type definition for component, assuming scores are passed as props
@@ -29,7 +29,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             }, 1000);
             return () => clearInterval(intervalId);
         } else {
-            navigation.navigate('GameOver');
+            navigation.navigate('GameOver', {playerOneName, playerTwoName, points});
         }
 
     }, [timeLeft, navigation]);
