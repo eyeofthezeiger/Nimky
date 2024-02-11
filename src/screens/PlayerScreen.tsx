@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { RootStackParamList } from '../../navigationTypes';
 import { RouteProp } from '@react-navigation/native';
@@ -15,32 +15,54 @@ type PlayerScreenProps = {
 
 const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const {playerOneName, playerTwoName } = route.params;
-  const [answer, setAnswer] = useState('');
+    const [currentPlayer, setCurrentPlayer] = useState(playerOneName);
+    const [currentAnswer, setCurrentAnswer] = useState('');
+    const [previousAnswer, setPreviousAnswer] = useState('');
+    const [timeLeft, setTimeLeft] = useState(30);
 
-  // Add logic for timer, points, and handling answer submission here
+    useEffect(() => {
+        if (timeLeft > 0) {
+            const intervalId = setInterval(() => {
+                setTimeLeft(timeLeft - 1);
+            }, 1000);
+            return () => clearInterval(intervalId);
+        } else {
+            navigation.navigate('GameOver');
+        }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topBar}>
-        <Text style={styles.timer}>00:30</Text>
-        <Text style={styles.header}>Player1: {playerOneName} , Player2: {playerTwoName}</Text>
-        <Text style={styles.points}>Points: 100</Text>
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.helpfulText}>Guess the word based on the hints below.</Text>
-        <Text style={styles.instructionText}>Write your answer in the box:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Your answer..."
-          onChangeText={setAnswer}
-          value={answer}
-        />
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('GameOver')}>
-          <Text style={styles.buttonText}>Enter</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  );
+    }, [timeLeft]);
+
+    const handleEnterPress = () => {
+        setPreviousAnswer(currentAnswer);
+        setCurrentAnswer('');
+        setCurrentPlayer(currentPlayer === playerOneName ? playerTwoName : playerOneName);
+    };
+
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+
+    return (
+        <SafeAreaView style={styles.container}>
+        <View style={styles.topBar}>
+            <Text style={styles.timer}>{`${minutes}:${seconds.toString().padStart(2, '0')}`}</Text>
+            <Text style={styles.header}> {currentPlayer} you are up! </Text>
+            <Text style={styles.points}>Points: 100</Text>
+        </View>
+        <View style={styles.content}>
+            <Text style={styles.helpfulText}>Previous answer is {previousAnswer}</Text>
+            <Text style={styles.instructionText}>Write your answer in the box:</Text>
+            <TextInput
+            style={styles.input}
+            placeholder="Your answer..."
+            onChangeText={setCurrentAnswer}
+            value={currentAnswer}
+            />
+            <TouchableOpacity style={styles.button} onPress={handleEnterPress}>
+            <Text style={styles.buttonText}>Enter</Text>
+            </TouchableOpacity>
+        </View>
+        </SafeAreaView>
+    );
 };
 
 const styles = StyleSheet.create({

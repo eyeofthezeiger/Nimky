@@ -16,7 +16,7 @@ export default function App() {
         <Stack.Screen name="Starting" component={StartingScreen} />
         <Stack.Screen name="Game" component={PlayerScreen} />
         <Stack.Screen name="GameOver" component={GameOverScreen} />
-      </Stack.Navigator>
+      </Stack.Navigator> 
     </NavigationContainer>
   );
 }
