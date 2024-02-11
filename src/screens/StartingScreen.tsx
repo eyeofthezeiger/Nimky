@@ -30,7 +30,10 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
             value={playerTwoName}
         />
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Game')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Game', {
+        playerOneName,
+        playerTwoName
+      })}>
         <Text style={styles.buttonText}>Start</Text>
       </TouchableOpacity>
     </SafeAreaView>

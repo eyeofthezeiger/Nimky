@@ -1,6 +1,9 @@
 export type RootStackParamList = {
     Starting: undefined;
-    Game: undefined;
+    Game: {
+        playerOneName: string;
+        playerTwoName: string;
+    };
     GameOver: undefined;
   };
   

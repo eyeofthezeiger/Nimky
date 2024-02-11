@@ -2,15 +2,19 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { RootStackParamList } from '../../navigationTypes';
+import { RouteProp } from '@react-navigation/native';
 
 type PlayerScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+type PlayerScreenRouteProp = RouteProp<RootStackParamList, 'Game'>
 
 // Props type definition for component, assuming scores are passed as props
 type PlayerScreenProps = {
     navigation: PlayerScreenNavigationProp;
+    route: PlayerScreenRouteProp;
 };
 
-const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
+const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
+    const {playerOneName, playerTwoName } = route.params;
   const [answer, setAnswer] = useState('');
 
   // Add logic for timer, points, and handling answer submission here
@@ -19,7 +23,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.timer}>00:30</Text>
-        <Text style={styles.header}>Game Title</Text>
+        <Text style={styles.header}>Player1: {playerOneName} , Player2: {playerTwoName}</Text>
         <Text style={styles.points}>Points: 100</Text>
       </View>
       <View style={styles.content}>
