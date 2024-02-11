@@ -16,8 +16,10 @@ type PlayerScreenProps = {
 const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const {playerOneName, playerTwoName } = route.params;
     const [currentPlayer, setCurrentPlayer] = useState(playerOneName);
+    const [initalLetter] = useState(generateRandomLetter);
     const [currentAnswer, setCurrentAnswer] = useState('');
     const [previousAnswer, setPreviousAnswer] = useState('');
+    const [points, setPoints] = useState(0);
     const [timeLeft, setTimeLeft] = useState(30);
 
     useEffect(() => {
@@ -30,26 +32,38 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             navigation.navigate('GameOver');
         }
 
-    }, [timeLeft]);
+    }, [timeLeft, navigation]);
 
     const handleEnterPress = () => {
         setPreviousAnswer(currentAnswer);
         setCurrentAnswer('');
         setCurrentPlayer(currentPlayer === playerOneName ? playerTwoName : playerOneName);
+        setTimeLeft(timeLeft + 5);
+        setPoints(points + 1);
     };
+
+    function generateRandomLetter() {
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const randomIndex = Math.floor(Math.random() * alphabet.length);
+        return alphabet[randomIndex];
+    }
 
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
+
+    const addTime = () => {
+        setTimeLeft(timeLeft + 5);
+    }
 
     return (
         <SafeAreaView style={styles.container}>
         <View style={styles.topBar}>
             <Text style={styles.timer}>{`${minutes}:${seconds.toString().padStart(2, '0')}`}</Text>
             <Text style={styles.header}> {currentPlayer} you are up! </Text>
-            <Text style={styles.points}>Points: 100</Text>
+            <Text style={styles.points}>Points: {points}</Text>
         </View>
         <View style={styles.content}>
-            <Text style={styles.helpfulText}>Previous answer is {previousAnswer}</Text>
+            <Text style={styles.helpfulText}>{!previousAnswer ? 'Think of a person you know whose first name start with the letter ' + initalLetter : 'Think of a person you know who’s first name starts with the last name of the previous answer ' + previousAnswer}</Text>
             <Text style={styles.instructionText}>Write your answer in the box:</Text>
             <TextInput
             style={styles.input}
