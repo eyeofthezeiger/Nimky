@@ -17,15 +17,43 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
       <View style={styles.content}>
         <Text style={styles.mainTitle}>Nimky</Text>
         <Text style={styles.subTitle}>Remember your people</Text>
+        <Text style={styles.helpfulText}>
+        Welcome to the Name Chain Game! Your goal is to come up with a person's name that begins with a specific letter. Quick thinking and creativity are your best tools.
+        </Text>
+        <Text style={styles.instructionText}>
+        Here's how to play:
+        </Text>
+        <Text style={styles.instructionText}>
+            - If it's your first turn, start with any person's first name that begins with the given letter.
+        </Text>
+        <Text style={styles.instructionText}>
+            - On subsequent turns, your letters for the first and last name are determined by the last letters of the previous answers.
+        </Text>
+        <Text style={styles.instructionText}>
+            Earning Points:
+        </Text>
+        <Text style={styles.instructionText}>
+            - Earn 5 points if the last name you enter starts with the same letter as the ending of the previous answer's last name.
+        </Text>
+        <Text style={styles.instructionText}>
+            - Otherwise, you earn 3 points for a valid guess.
+        </Text>
+        <Text style={styles.instructionText}>Timer:</Text>
+        <Text style={styles.instructionText}>
+            Each turn has a 30-second timer. Be quick, or the game will be over!
+        </Text>
+        <Text style={styles.instructionText}>
+            Each correctly answered turn will add 5 seconds to the clock!
+        </Text>
         <TextInput
             style={styles.input}
-            placeholder='Player 1 Name'
+            placeholder='Player 1'
             onChangeText={setPlayerOneName}
             value={playerOneName}
         />
         <TextInput
             style={styles.input}
-            placeholder='Player 2 Name'
+            placeholder='Player 2'
             onChangeText={setPlayerTwoName}
             value={playerTwoName}
         />
@@ -58,6 +86,16 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontSize: 18,
+  },
+  helpfulText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  instructionText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginVertical: 10,
   },
   input: {
     height: 40,

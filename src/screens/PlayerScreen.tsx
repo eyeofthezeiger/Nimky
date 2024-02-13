@@ -24,6 +24,8 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const [firstAnswerLetter, setFirstAnswerLetter] = useState('');
     const [lastAnswerLetter, setLastAnswerLetter] = useState('');
     const [turnNumber, setTurnNumber] = useState(0);
+    const [playerOnePoints, setPlayerOnePoints] = useState(0);
+    const [playerTwoPoints, setPlayerTwoPoints] = useState(0);
     const [points, setPoints] = useState(0);
     const [isTimerActive, setIsTimerActive] = useState(true);
     const [timeLeft, setTimeLeft] = useState(30);
@@ -35,7 +37,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             }, 1000);
             return () => clearInterval(intervalId);
         } else {
-            navigation.navigate('GameOver', {playerOneName, playerTwoName, points});
+            navigation.navigate('GameOver', {playerOneName, playerTwoName, playerOnePoints, playerTwoPoints, points});
         }
 
     }, [timeLeft, navigation]);
@@ -51,6 +53,11 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const handleEnterPress = () => {
         const requiredFirstNameLetter = previousFirstName ? firstAnswerLetter : initialLetter;
 
+        if (!currentFirstName.trim() || !currentLastName.trim()) {
+            alert(`Please enter both a first name and last name`);
+            return;
+        }
+
         if (!currentFirstName.trim().toUpperCase().startsWith(requiredFirstNameLetter)) {
             alert(`The first name must start with the letter "${requiredFirstNameLetter}"`);
             return;
@@ -65,15 +72,39 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
         setFirstAnswerLetter(firstNameLetter);
         setLastAnswerLetter(lastNameLetter);
 
+        
+
+        const pointsAwarded = currentLastName.trim().toUpperCase().startsWith(lastAnswerLetter) && turnNumber > 0 ? 5 : 3;
+
+        if (currentPlayer === playerOneName) {
+            setPlayerOnePoints(playerOnePoints + pointsAwarded);
+        } else if (currentPlayer === playerTwoName) {
+            setPlayerTwoPoints(playerTwoPoints + pointsAwarded);
+        }
+
+        setPoints(points + pointsAwarded);
+
         setCurrentFirstName('');
         setCurrentLastName('');
         setCurrentPlayer(currentPlayer === playerOneName ? playerTwoName : playerOneName);
         setTimeLeft(timeLeft + 5);
-        if (currentLastName.trim().toUpperCase().startsWith(lastAnswerLetter)) {
-            setPoints(points + 5);
-        } else {
-            setPoints(points + 3);
-        }
+        // if (turnNumber > 0 && currentLastName.trim().toUpperCase().startsWith(lastAnswerLetter)) {
+        //     if (currentPlayer === playerOneName) {
+        //         setPlayerOnePoints(playerOnePoints + 5);
+        //     }
+        //     if (currentPlayer === playerTwoName) {
+        //         setPlayerTwoPoints(playerTwoPoints + 5);
+        //     }
+        //     setPoints(points + 5);
+        // } else {
+        //     if (currentPlayer === playerOneName) {
+        //         setPlayerOnePoints(playerOnePoints + 3);
+        //     } 
+        //     if (currentPlayer === playerTwoName) {
+        //         setPlayerTwoPoints(playerTwoPoints + 3);
+        //     }
+        //     setPoints(points + 3);
+        // }
         setTurnNumber(turnNumber + 1);
     };
 
@@ -94,10 +125,13 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             <Text style={styles.points}>Points: {points}</Text>
         </View>
         <View style={styles.content}>
-            <Text style={styles.helpfulText}>{!previousFirstName ? 'Think of a person you know whose first name start with the letter ' + initialLetter : 'Think of a person you know who’s first name starts with the last name of the previous answer ' + previousFirstName}</Text>
+            <Text style={styles.helpfulText}>{previousFirstName + ' ' + previousLastName}</Text>
+            <Text style={styles.helpfulText}>{!previousFirstName ? 'Think of a person you know whose first name start with the letter ' + initialLetter : 'Think of a person you know who’s first name starts with the last letter of last rounds first name ' + previousFirstName}</Text>
+            <Text style={styles.helpfulText}>{previousLastName && 'test '}</Text>
+
             <Text style={styles.instructionText}>In the box below type that person’s first and last name</Text>
-            <Text style={styles.instructionText}>first name last letter: {firstAnswerLetter}</Text>
-            <Text style={styles.instructionText}>last name last letter: {lastAnswerLetter}</Text>
+            <Text style={styles.instructionText}>first name starting letter: {firstAnswerLetter}</Text>
+            <Text style={styles.instructionText}>(Bonus Points) last name starting letter: {lastAnswerLetter}</Text>
             <TextInput
             style={styles.input}
             placeholder="Enter first name..."

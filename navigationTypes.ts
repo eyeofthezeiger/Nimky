@@ -7,6 +7,8 @@ export type RootStackParamList = {
     GameOver: {
         playerOneName: string;
         playerTwoName: string;
+        playerOnePoints: number;
+        playerTwoPoints: number;
         points: number;
     };
   };

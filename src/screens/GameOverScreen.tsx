@@ -14,13 +14,18 @@ type GameOverScreenProps = {
 };
 
 const GameOverScreen: React.FC<GameOverScreenProps> = ({navigation, route}) => {
-    const {playerOneName, playerTwoName, points} = route.params;
+    const {playerOneName, playerTwoName, playerOnePoints, playerTwoPoints, points} = route.params;
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Game Over</Text>
       <View style={styles.scoreContainer}>
         <Text style={styles.scoreText}>Congratulations {playerOneName} and {playerTwoName}!</Text>
-        <Text style={styles.scoreText}>{points} points!!</Text>
+        <Text style={styles.scoreText}>{points} team points!!</Text>
+        <Text style={styles.scoreText}>{playerOnePoints === playerTwoPoints ?
+        "It's a tie for MVP!!!" :
+        playerOnePoints > playerTwoPoints ? playerOneName + ' is the MVP!!!!' : playerTwoName + ' is the MVP!!!'}</Text>
+        <Text style={styles.scoreText}>{playerOneName} had {playerOnePoints} points!</Text>
+        <Text style={styles.scoreText}>{playerTwoName} had {playerTwoPoints} points!</Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Starting')}>
         <Text style={styles.buttonText}>Play Again</Text>
