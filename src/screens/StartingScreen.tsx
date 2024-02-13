@@ -15,8 +15,8 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.mainTitle}>Main Title</Text>
-        <Text style={styles.subTitle}>Sub Title</Text>
+        <Text style={styles.mainTitle}>Nimky</Text>
+        <Text style={styles.subTitle}>Remember your people</Text>
         <TextInput
             style={styles.input}
             placeholder='Player 1 Name'

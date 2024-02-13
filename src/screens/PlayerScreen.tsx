@@ -17,8 +17,12 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const {playerOneName, playerTwoName } = route.params;
     const [currentPlayer, setCurrentPlayer] = useState(playerOneName);
     const [initalLetter] = useState(generateRandomLetter);
-    const [currentAnswer, setCurrentAnswer] = useState('');
-    const [previousAnswer, setPreviousAnswer] = useState('');
+    const [currentFirstName, setCurrentFirstName] = useState('');
+    const [currentLastName, setCurrentLastName] = useState('');
+    const [previousFirstName, setPreviousFirstName] = useState('');
+    const [previousLastName, setPreviousLastName] = useState('');
+    const [firstAnswerLetter, setFirstAnswerLetter] = useState('');
+    const [lastAnswerLetter, setLastAnswerLetter] = useState('');
     const [points, setPoints] = useState(0);
     const [timeLeft, setTimeLeft] = useState(30);
 
@@ -35,8 +39,17 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     }, [timeLeft, navigation]);
 
     const handleEnterPress = () => {
-        setPreviousAnswer(currentAnswer);
-        setCurrentAnswer('');
+        setPreviousFirstName(currentFirstName);
+        setPreviousLastName(currentLastName);
+
+        const firstNameLetter = currentFirstName.trim().slice(-1).toUpperCase();
+        const lastNameLetter = currentLastName.trim().slice(-1).toUpperCase();
+
+        setFirstAnswerLetter(firstNameLetter);
+        setLastAnswerLetter(lastNameLetter);
+
+        setCurrentFirstName('');
+        setCurrentLastName('');
         setCurrentPlayer(currentPlayer === playerOneName ? playerTwoName : playerOneName);
         setTimeLeft(timeLeft + 5);
         setPoints(points + 1);
@@ -51,10 +64,6 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
 
-    const addTime = () => {
-        setTimeLeft(timeLeft + 5);
-    }
-
     return (
         <SafeAreaView style={styles.container}>
         <View style={styles.topBar}>
@@ -63,13 +72,21 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             <Text style={styles.points}>Points: {points}</Text>
         </View>
         <View style={styles.content}>
-            <Text style={styles.helpfulText}>{!previousAnswer ? 'Think of a person you know whose first name start with the letter ' + initalLetter : 'Think of a person you know who’s first name starts with the last name of the previous answer ' + previousAnswer}</Text>
-            <Text style={styles.instructionText}>Write your answer in the box:</Text>
+            <Text style={styles.helpfulText}>{!previousFirstName ? 'Think of a person you know whose first name start with the letter ' + initalLetter : 'Think of a person you know who’s first name starts with the last name of the previous answer ' + previousFirstName}</Text>
+            <Text style={styles.instructionText}>In the box below type that person’s first and last name</Text>
+            <Text style={styles.instructionText}>first name last letter: {firstAnswerLetter}</Text>
+            <Text style={styles.instructionText}>last name last letter: {lastAnswerLetter}</Text>
             <TextInput
             style={styles.input}
-            placeholder="Your answer..."
-            onChangeText={setCurrentAnswer}
-            value={currentAnswer}
+            placeholder="Enter first name..."
+            onChangeText={setCurrentFirstName}
+            value={currentFirstName}
+            />
+            <TextInput
+            style={styles.input}
+            placeholder="Enter last name..."
+            onChangeText={setCurrentLastName}
+            value={currentLastName}
             />
             <TouchableOpacity style={styles.button} onPress={handleEnterPress}>
             <Text style={styles.buttonText}>Enter</Text>
