@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { RootStackParamList } from '../../navigationTypes';
 import { RouteProp } from '@react-navigation/native';
 
@@ -16,14 +16,16 @@ type PlayerScreenProps = {
 const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const {playerOneName, playerTwoName } = route.params;
     const [currentPlayer, setCurrentPlayer] = useState(playerOneName);
-    const [initalLetter] = useState(generateRandomLetter);
+    const [initialLetter] = useState(generateRandomLetter);
     const [currentFirstName, setCurrentFirstName] = useState('');
     const [currentLastName, setCurrentLastName] = useState('');
     const [previousFirstName, setPreviousFirstName] = useState('');
     const [previousLastName, setPreviousLastName] = useState('');
     const [firstAnswerLetter, setFirstAnswerLetter] = useState('');
     const [lastAnswerLetter, setLastAnswerLetter] = useState('');
+    const [turnNumber, setTurnNumber] = useState(0);
     const [points, setPoints] = useState(0);
+    const [isTimerActive, setIsTimerActive] = useState(true);
     const [timeLeft, setTimeLeft] = useState(30);
 
     useEffect(() => {
@@ -38,7 +40,22 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
 
     }, [timeLeft, navigation]);
 
+    useEffect(() => {
+        const today = new Date();
+        const isValentinesDay = today.getMonth() === 1 && today.getDate() === 14;
+        if (turnNumber === 10 && playerOneName.trim().toUpperCase() === 'MATT' && playerTwoName.trim().toUpperCase() === 'NIKKI' && isValentinesDay) {
+            alert('Happy Valentines Day Nikki <3 <3 <3 !!! Love you so much :)')
+        }
+    }, [turnNumber]);
+
     const handleEnterPress = () => {
+        const requiredFirstNameLetter = previousFirstName ? firstAnswerLetter : initialLetter;
+
+        if (!currentFirstName.trim().toUpperCase().startsWith(requiredFirstNameLetter)) {
+            alert(`The first name must start with the letter "${requiredFirstNameLetter}"`);
+            return;
+        }
+
         setPreviousFirstName(currentFirstName);
         setPreviousLastName(currentLastName);
 
@@ -52,7 +69,12 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
         setCurrentLastName('');
         setCurrentPlayer(currentPlayer === playerOneName ? playerTwoName : playerOneName);
         setTimeLeft(timeLeft + 5);
-        setPoints(points + 1);
+        if (currentLastName.trim().toUpperCase().startsWith(lastAnswerLetter)) {
+            setPoints(points + 5);
+        } else {
+            setPoints(points + 3);
+        }
+        setTurnNumber(turnNumber + 1);
     };
 
     function generateRandomLetter() {
@@ -72,7 +94,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             <Text style={styles.points}>Points: {points}</Text>
         </View>
         <View style={styles.content}>
-            <Text style={styles.helpfulText}>{!previousFirstName ? 'Think of a person you know whose first name start with the letter ' + initalLetter : 'Think of a person you know who’s first name starts with the last name of the previous answer ' + previousFirstName}</Text>
+            <Text style={styles.helpfulText}>{!previousFirstName ? 'Think of a person you know whose first name start with the letter ' + initialLetter : 'Think of a person you know who’s first name starts with the last name of the previous answer ' + previousFirstName}</Text>
             <Text style={styles.instructionText}>In the box below type that person’s first and last name</Text>
             <Text style={styles.instructionText}>first name last letter: {firstAnswerLetter}</Text>
             <Text style={styles.instructionText}>last name last letter: {lastAnswerLetter}</Text>
