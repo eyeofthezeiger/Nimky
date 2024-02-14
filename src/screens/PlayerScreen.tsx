@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { RootStackParamList } from '../../navigationTypes';
 import { RouteProp } from '@react-navigation/native';
 
@@ -107,6 +107,11 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
 
     return (
         <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
         <View style={styles.topBar}>
             <Text style={styles.timer}>{`${minutes}:${seconds.toString().padStart(2, '0')}`}</Text>
             <Text style={styles.header}> {currentPlayer} you are up! </Text>
@@ -140,6 +145,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             <Text style={styles.buttonText}>Enter</Text>
             </TouchableOpacity>
         </View>
+        </KeyboardAvoidingView>
         </SafeAreaView>
     );
 };

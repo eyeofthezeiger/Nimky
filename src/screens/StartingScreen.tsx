@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { RootStackParamList } from '../../navigationTypes';
 
 type StartingScreenNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -17,7 +17,12 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
     const playerTwoRef = useRef<TextInput>(null);
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+        <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
+      <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.mainTitle}>Nimky</Text>
         <Text style={styles.subTitle}>Remember your people</Text>
         <Text style={styles.helpfulText}>
@@ -65,7 +70,8 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
                 playerTwoName
             })}
         />
-      </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Game', {
         playerOneName,
         playerTwoName
@@ -81,11 +87,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 20, // Adjust based on your screen's design
-    paddingBottom: 50, // Gives some space at the bottom for the button
+    // paddingTop: 20, // Adjust based on your screen's design
+    // paddingBottom: 50, // Gives some space at the bottom for the button
   },
   content: {
-    alignItems: 'center', // Centers the titles vertically
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 50 // Centers the titles vertically
   },
   mainTitle: {
     fontSize: 24,
