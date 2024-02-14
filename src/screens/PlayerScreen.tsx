@@ -1,5 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { RootStackParamList } from '../../navigationTypes';
 import { RouteProp } from '@react-navigation/native';
@@ -29,6 +29,9 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const [points, setPoints] = useState(0);
     const [isTimerActive, setIsTimerActive] = useState(true);
     const [timeLeft, setTimeLeft] = useState(30);
+
+    const firstNameRef = useRef<TextInput>(null);
+    const lastNameRef = useRef<TextInput>(null);
 
     useEffect(() => {
         if (timeLeft > 0) {
@@ -118,16 +121,20 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             <Text style={styles.instructionText}>first name starting letter: {firstAnswerLetter}</Text>
             <Text style={styles.instructionText}>(Bonus Points) last name starting letter: {lastAnswerLetter}</Text>
             <TextInput
+            ref={firstNameRef}
             style={styles.input}
             placeholder="Enter first name..."
             onChangeText={setCurrentFirstName}
             value={currentFirstName}
+            onSubmitEditing={() => lastNameRef.current?.focus()}
             />
             <TextInput
+            ref={lastNameRef}
             style={styles.input}
             placeholder="Enter last name..."
             onChangeText={setCurrentLastName}
             value={currentLastName}
+            onSubmitEditing={handleEnterPress}
             />
             <TouchableOpacity style={styles.button} onPress={handleEnterPress}>
             <Text style={styles.buttonText}>Enter</Text>

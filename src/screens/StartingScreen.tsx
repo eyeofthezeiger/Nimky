@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput } from 'react-native';
 import { RootStackParamList } from '../../navigationTypes';
@@ -12,6 +12,9 @@ type StartingScreenProps = {
 const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
     const [playerOneName, setPlayerOneName] = useState('Player 1');
     const [playerTwoName, setPlayerTwoName] = useState('Player 2');
+
+    const playerOneRef = useRef<TextInput>(null);
+    const playerTwoRef = useRef<TextInput>(null);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -46,16 +49,21 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
             Each correctly answered turn will add 5 seconds to the clock!
         </Text>
         <TextInput
+            ref={playerOneRef}
             style={styles.input}
-            placeholder='Player 1'
+            placeholder='Enter Player 1 Name...'
             onChangeText={setPlayerOneName}
-            value={playerOneName}
+            onSubmitEditing={() => playerTwoRef.current?.focus()}
         />
         <TextInput
+        ref={playerTwoRef}
             style={styles.input}
-            placeholder='Player 2'
+            placeholder='Enter Player 2 Name...'
             onChangeText={setPlayerTwoName}
-            value={playerTwoName}
+            onSubmitEditing={() => navigation.navigate('Game', {
+                playerOneName,
+                playerTwoName
+            })}
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Game', {
