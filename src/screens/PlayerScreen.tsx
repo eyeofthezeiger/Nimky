@@ -45,7 +45,10 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     useEffect(() => {
         const today = new Date();
         const isValentinesDay = today.getMonth() === 1 && today.getDate() === 14;
-        if (turnNumber === 10 && playerOneName.trim().toUpperCase() === 'MATT' && playerTwoName.trim().toUpperCase() === 'NIKKI' && isValentinesDay) {
+        const isMattNikki = playerOneName.trim().toUpperCase() === 'MATT' && playerTwoName.trim().toUpperCase() === 'NIKKI';
+        const isNikkiMatt = playerOneName.trim().toUpperCase() === 'NIKKI' && playerTwoName.trim().toUpperCase() === 'MATT';
+        const isNikkiAndMatt = isMattNikki || isNikkiMatt;
+        if (turnNumber === 10 && isValentinesDay && isNikkiAndMatt) {
             alert('Happy Valentines Day Nikki <3 <3 <3 !!! Love you so much :)')
         }
     }, [turnNumber]);
@@ -72,8 +75,6 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
         setFirstAnswerLetter(firstNameLetter);
         setLastAnswerLetter(lastNameLetter);
 
-        
-
         const pointsAwarded = currentLastName.trim().toUpperCase().startsWith(lastAnswerLetter) && turnNumber > 0 ? 5 : 3;
 
         if (currentPlayer === playerOneName) {
@@ -88,23 +89,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
         setCurrentLastName('');
         setCurrentPlayer(currentPlayer === playerOneName ? playerTwoName : playerOneName);
         setTimeLeft(timeLeft + 5);
-        // if (turnNumber > 0 && currentLastName.trim().toUpperCase().startsWith(lastAnswerLetter)) {
-        //     if (currentPlayer === playerOneName) {
-        //         setPlayerOnePoints(playerOnePoints + 5);
-        //     }
-        //     if (currentPlayer === playerTwoName) {
-        //         setPlayerTwoPoints(playerTwoPoints + 5);
-        //     }
-        //     setPoints(points + 5);
-        // } else {
-        //     if (currentPlayer === playerOneName) {
-        //         setPlayerOnePoints(playerOnePoints + 3);
-        //     } 
-        //     if (currentPlayer === playerTwoName) {
-        //         setPlayerTwoPoints(playerTwoPoints + 3);
-        //     }
-        //     setPoints(points + 3);
-        // }
+
         setTurnNumber(turnNumber + 1);
     };
 
