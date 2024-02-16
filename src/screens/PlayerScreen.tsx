@@ -51,35 +51,55 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
         const isMattNikki = playerOneName.trim().toUpperCase() === 'MATT' && playerTwoName.trim().toUpperCase() === 'NIKKI';
         const isNikkiMatt = playerOneName.trim().toUpperCase() === 'NIKKI' && playerTwoName.trim().toUpperCase() === 'MATT';
         const isNikkiAndMatt = isMattNikki || isNikkiMatt;
-        if (turnNumber === 10 && isValentinesDay && isNikkiAndMatt) {
+        if (turnNumber === 5 && isValentinesDay && isNikkiAndMatt) {
             alert('Happy Valentines Day Nikki <3 <3 <3 !!! Love you so much :)')
         }
     }, [turnNumber]);
 
     const handleEnterPress = () => {
-        const requiredFirstNameLetter = previousFirstName ? firstAnswerLetter : initialLetter;
 
+        // Helper function to normalize text for comparison
+        const normalizeText = (text: string) => 
+            text.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+            .replace(/[\s'-\.]/g, '') // Remove spaces, hyphens, apostrophes, and periods
+            .toUpperCase();
+
+        // Validate input presence
         if (!currentFirstName.trim() || !currentLastName.trim()) {
             alert(`Please enter both a first name and last name`);
             return;
         }
 
-        if (!currentFirstName.trim().toUpperCase().startsWith(requiredFirstNameLetter)) {
+        // Normalize input and required letter
+        const normalizedFirstName = normalizeText(currentFirstName);
+        const normalizedLastName = normalizeText(currentLastName);
+        const requiredFirstNameLetter = previousFirstName ? firstAnswerLetter : initialLetter;
+        const normalizedRequiredLetter = normalizeText(requiredFirstNameLetter);
+
+        // Validate input starts with the required letter
+        if (!normalizedFirstName.trim().toUpperCase().startsWith(normalizedRequiredLetter)) {
             alert(`The first name must start with the letter "${requiredFirstNameLetter}"`);
             return;
         }
-
+        
+        // Set previous names for next turn
         setPreviousFirstName(currentFirstName);
         setPreviousLastName(currentLastName);
 
-        const firstNameLetter = currentFirstName.trim().slice(-1).toUpperCase();
-        const lastNameLetter = currentLastName.trim().slice(-1).toUpperCase();
+        // Dtermine letters for validation and randomization
+        const firstNameLetter = normalizedLastName[0];
+        const randomIndex = Math.floor(Math.random() * normalizedFirstName.length);
+        const lastNameLetter = normalizedFirstName[randomIndex];
 
+        // Update answer letter state
         setFirstAnswerLetter(firstNameLetter);
         setLastAnswerLetter(lastNameLetter);
 
+        // Calculate points awarded for this turn
         const pointsAwarded = currentLastName.trim().toUpperCase().startsWith(lastAnswerLetter) && turnNumber > 0 ? 5 : 3;
 
+        // Update Player Points
         if (currentPlayer === playerOneName) {
             setPlayerOnePoints(playerOnePoints + pointsAwarded);
         } else if (currentPlayer === playerTwoName) {
@@ -87,12 +107,10 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
         }
 
         setPoints(points + pointsAwarded);
-
         setCurrentFirstName('');
         setCurrentLastName('');
         setCurrentPlayer(currentPlayer === playerOneName ? playerTwoName : playerOneName);
         setTimeLeft(timeLeft + 5);
-
         setTurnNumber(turnNumber + 1);
     };
 
