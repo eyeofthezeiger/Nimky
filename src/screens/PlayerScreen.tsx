@@ -141,7 +141,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
             <Text style={styles.helpfulText}>{previousLastName && 'test '}</Text>
 
             <Text style={styles.instructionText}>In the box below type that person’s first and last name</Text>
-            <Text style={styles.instructionText}>first name starting letter: {firstAnswerLetter}</Text>
+            <Text style={styles.instructionText}>first name starting letter: {!firstAnswerLetter ? initialLetter : firstAnswerLetter}</Text>
             <Text style={styles.instructionText}>(Bonus Points) last name starting letter: {lastAnswerLetter}</Text>
             <TextInput
             ref={firstNameRef}
