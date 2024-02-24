@@ -34,10 +34,10 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
             <Text style={styles.subTitle}>Remember your people</Text>
             <View style={styles.mainButtonContainer}>
                 <TouchableOpacity style={styles.startGameButton} onPress={() => setStartModalVisible(true)}>
-                <Text style={styles.mainButtonText}>Start</Text>
+                <Text style={styles.mainButtonText}>START</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.howToPlayButton} onPress={() => setHowToPlayVisible(true)}>
-                <Text style={styles.mainButtonText}>How to Play</Text>
+                <Text style={styles.mainButtonText}>HOW TO PLAY</Text>
                 </TouchableOpacity>
             </View>
           </ScrollView>
@@ -52,7 +52,7 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>How to Play</Text>
+              <Text style={styles.modalText}>HOW TO PLAY</Text>
               {/* How to play content goes here */}
               <Text style={styles.modalInstructionText}>
               {/* Welcome to the Name Chain Game! Your goal is to come up with a person's name that begins with a specific letter. Quick thinking and creativity are your best tools.
@@ -72,7 +72,7 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
                 style={[styles.button, styles.closeButton]}
                 onPress={() => setHowToPlayVisible(!howToPlayVisible)}
               >
-                <Text style={styles.buttonText}>Exit</Text>
+                <Text style={styles.buttonText}>CLOSE</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -110,13 +110,13 @@ const StartingScreen: React.FC<StartingScreenProps> = ({ navigation }) => {
                         navigation.navigate('Game', { playerOneName, playerTwoName });
                         }}
                     >
-                        <Text style={styles.buttonText}>Start Game</Text>
+                        <Text style={styles.buttonText}>START</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.button, styles.buttonHalf, styles.closeButton]}
                         onPress={() => setStartModalVisible(!startModalVisible)}
                     >
-                        <Text style={styles.buttonText}>Exit</Text>
+                        <Text style={styles.buttonText}>CLOSE</Text>
                     </TouchableOpacity>
                     </View>
                 </View>
@@ -133,6 +133,19 @@ const styles = StyleSheet.create({
   },
   mainTextColor: {
     color: '#806D5A'
+  },
+  screenBorder: {
+    flex: 1,
+    borderColor: '#806D5A', // Use the same color as your modal border
+    borderWidth: 10, // Matching modal border width
+    borderRadius: 20, // If you want rounded corners for the whole screen
+    margin: 5, // Adjust as needed, creates space for the shadow
+    shadowColor: '#F86657', // Matching modal shadow color
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10, // Android shadow
+    backgroundColor: 'transparent', // Ensure LinearGradient colors show through
   },
   safeAreaView: {
     flex: 1,
@@ -159,6 +172,7 @@ const styles = StyleSheet.create({
     color: '#3F000F'
   },
   input: {
+    fontFamily: 'Noteworthy', 
     height: 40,
     margin: 12,
     borderWidth: 1,
@@ -178,6 +192,7 @@ const styles = StyleSheet.create({
     marginTop: 10, // Added to separate buttons and inputs
   },
   buttonText: {
+    fontFamily: 'Noteworthy', 
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
@@ -215,6 +230,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   mainButtonText: { // Text style for main buttons
+    fontFamily: 'Noteworthy', 
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
@@ -250,6 +266,7 @@ const styles = StyleSheet.create({
     marginTop: -150
   },
   modalText: {
+    fontFamily: 'Noteworthy', 
     marginBottom: 15,
     textAlign: 'center',
     fontWeight: 'bold',
@@ -257,6 +274,7 @@ const styles = StyleSheet.create({
     color: '#70594A'
   },
   modalInstructionText: {
+    fontFamily: 'Noteworthy', 
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 10,

@@ -29,7 +29,7 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
     const [playerTwoPoints, setPlayerTwoPoints] = useState(0);
     const [points, setPoints] = useState(0);
     const [isTimerActive, setIsTimerActive] = useState(true);
-    const [timeLeft, setTimeLeft] = useState(30);
+    const [timeLeft, setTimeLeft] = useState(999999999);
 
     const firstNameRef = useRef<TextInput>(null);
     const lastNameRef = useRef<TextInput>(null);
@@ -164,9 +164,15 @@ const PlayerScreen: React.FC<PlayerScreenProps> = ({navigation, route}) => {
                 value={currentLastName}
                 onSubmitEditing={handleEnterPress}
                 />
-                <TouchableOpacity style={styles.button} onPress={handleEnterPress}>
-                <Text style={styles.buttonText}>Enter</Text>
-                </TouchableOpacity>
+                
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.enterButton} onPress={handleEnterPress}>
+                    <Text style={styles.buttonText}>ENTER</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.quitButton} onPress={() => navigation.navigate('GameOver', {playerOneName, playerTwoName, playerOnePoints, playerTwoPoints, points})}>
+                    <Text style={styles.buttonText}>QUIT</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
             </KeyboardAvoidingView>
             </SafeAreaView>
@@ -192,10 +198,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   header: {
+    fontFamily: 'Noteworthy', 
     fontSize: 22,
     fontWeight: 'bold',
   },
   points: {
+    fontFamily: 'Noteworthy', 
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -204,16 +212,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   helpfulText: {
+    fontFamily: 'Noteworthy', 
     fontSize: 16,
     textAlign: 'center',
     marginVertical: 10,
   },
   instructionText: {
+    fontFamily: 'Noteworthy', 
     fontSize: 16,
     textAlign: 'center',
     marginVertical: 10,
   },
   input: {
+    fontFamily: 'Noteworthy', 
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -221,14 +232,40 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
   },
-  button: {
-    backgroundColor: 'blue',
-    padding: 10,
+  enterButton: {
+    fontFamily: 'Noteworthy', 
+    backgroundColor: '#F87F6F',
+    fontWeight: 'bold',
+    width: '90%', // Nearly full width
+    marginHorizontal: '5%', // Center the button
+    padding: 15,
     borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  quitButton: {
+    fontFamily: 'Noteworthy', 
+    backgroundColor: '#FAB77B',
+    fontWeight: 'bold',
+    width: '90%', // Nearly full width
+    marginHorizontal: '5%', // Center the button
+    padding: 15,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
   },
   buttonText: {
+    fontFamily: 'Noteworthy', 
     color: 'white',
     fontSize: 18,
+  },
+  buttonContainer: {
+    width: '100%', // Full width to center buttons effectively
+    alignItems: 'center', // Center buttons horizontally
+    paddingBottom: 20, // Space at the bottom
+    marginTop: 125
   },
 });
 
