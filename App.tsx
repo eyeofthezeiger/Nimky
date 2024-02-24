@@ -14,16 +14,10 @@ export default function App() {
   return (
       
       <NavigationContainer>
-       
           <Stack.Navigator initialRouteName='Starting' screenOptions={{ headerShown: false, }}>
-          {/* <LinearGradient
-            colors={['#F87F6F', '#FAB77B', '#FBDC93']}
-            style={styles.container}
-            > */}
             <Stack.Screen name="Starting" component={StartingScreen} />
             <Stack.Screen name="Game" component={PlayerScreen} />
             <Stack.Screen name="GameOver" component={GameOverScreen} />
-            {/* </LinearGradient> */}
           </Stack.Navigator> 
       </NavigationContainer>
   );
